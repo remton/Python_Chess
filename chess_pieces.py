@@ -26,6 +26,8 @@ class EmptyPiece:
         self.attacked_spaces.clear()
 
 
+
+
 class Pawn:
     def __init__(self, color):
         self.location = []
@@ -95,6 +97,8 @@ class Pawn:
             board[attack_2[0]][attack_2[1]].set_attack(self.color, self.name)
             self.attacked_spaces.append([attack_2[0], attack_2[1]])
 
+    def promote(self, board, piece_class):
+        board[self.location[0]][self.location[1]].piece = piece_class(self.color)
 
 class Knight:
     def __init__(self, color):

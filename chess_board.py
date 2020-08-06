@@ -1,6 +1,6 @@
 # chess_board.py
 # Defines the ChessBoard and its relevant classes and functions
-from chess_pieces import EmptyPiece
+from chess_pieces import *
 from util import str_to_space
 import copy
 import preset_boards
@@ -127,11 +127,15 @@ class ChessBoard:
         piece = self.board[start[0]][start[1]].piece
         self.board[end[0]][end[1]].piece = piece
         self.board[start[0]][start[1]].piece = EmptyPiece()
+        piece.location = [end[0], end[1]]
         # Here we do special thing for certain pieces
         if piece.name == 'Pawn':
             piece.is_first_move = False
             if piece.took_en_passant:
                 self.board[piece.en_passant_capture[0]][piece.en_passant_capture[1]].piece = EmptyPiece()
+            if piece.color == 'w' and piece.location[0] == 7 or piece.color == 'b' and piece.location[0] == 0:
+                print('promotion')
+                piece.promote(self.board, Queen)
         if piece.name == 'Rook':
             piece.is_first_move = False
         if piece.name == 'King':
