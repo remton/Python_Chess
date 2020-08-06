@@ -1,4 +1,3 @@
-
 # Due to how this code is written indexing a space in the board is done [number][letter] like ['1']['a'] meaning a1
 # Dictionaries used to convert between strings like 'a4' to indexes like [5][0]
 board_to_space = {
