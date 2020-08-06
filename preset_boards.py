@@ -26,3 +26,14 @@ checkmate_1 = [
     [EmptyPiece(), Rook('w'), EmptyPiece(), EmptyPiece(), EmptyPiece(), EmptyPiece(), EmptyPiece(), EmptyPiece()],
     [EmptyPiece(), EmptyPiece(), EmptyPiece(), EmptyPiece(), EmptyPiece(), EmptyPiece(), King('b'), EmptyPiece()]
 ]
+
+promotion_1 = [
+    [King('w'), EmptyPiece(), EmptyPiece(), EmptyPiece(), EmptyPiece(), EmptyPiece(), EmptyPiece(), EmptyPiece()],
+    [EmptyPiece(), EmptyPiece(), EmptyPiece(), EmptyPiece(), EmptyPiece(), Pawn('b'), EmptyPiece(), EmptyPiece()],
+    [EmptyPiece(), EmptyPiece(), EmptyPiece(), EmptyPiece(), EmptyPiece(), EmptyPiece(), EmptyPiece(), EmptyPiece()],
+    [EmptyPiece(), EmptyPiece(), EmptyPiece(), EmptyPiece(), EmptyPiece(), EmptyPiece(), EmptyPiece(), EmptyPiece()],
+    [EmptyPiece(), EmptyPiece(), EmptyPiece(), EmptyPiece(), EmptyPiece(), EmptyPiece(), EmptyPiece(), EmptyPiece()],
+    [EmptyPiece(), EmptyPiece(), EmptyPiece(), EmptyPiece(), EmptyPiece(), EmptyPiece(), EmptyPiece(), EmptyPiece()],
+    [EmptyPiece(), EmptyPiece(), Pawn('w'), EmptyPiece(), EmptyPiece(), EmptyPiece(), EmptyPiece(), EmptyPiece()],
+    [EmptyPiece(), EmptyPiece(), EmptyPiece(), EmptyPiece(), EmptyPiece(), EmptyPiece(), King('b'), EmptyPiece()]
+]
