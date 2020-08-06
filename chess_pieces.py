@@ -1,7 +1,7 @@
 import math
 import util
 from numpy import sign
-from util import row_to_board, col_to_board, empty_abr, empty_color
+from util import empty_abr, empty_color
 
 
 class EmptyPiece:

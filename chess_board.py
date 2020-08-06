@@ -1,5 +1,5 @@
 from chess_pieces import EmptyPiece
-from util import board_to_space, row_to_board, col_to_board
+from util import board_to_space
 import copy
 import preset_boards
 
