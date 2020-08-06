@@ -1,0 +1,1 @@
+pyinstaller --windowed --hidden-import=numpy --hidden-import=tkinter --hidden-import=copy --hidden-import=math chess.spec
