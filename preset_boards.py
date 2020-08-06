@@ -1,4 +1,8 @@
+# preset_boards.py
+# Holds 2D lists representing board positions
+# Starting position is set at the start of chess.py
 from chess_pieces import EmptyPiece, Pawn, Knight, Bishop, Rook, Queen, King
+
 
 # Since chess boards count from bottom to top, this is not actually upside down
 default_board = [

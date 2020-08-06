@@ -1,16 +1,19 @@
+# Chess.py
+# This is the main file that is run in this program
 import chess_board
 import chess_pieces
-import gui
 import util
 from chess_board import ChessBoard
 import preset_boards
 import gui
 
-cb = ChessBoard(preset_boards.default_board)
-is_game_over = False
+
 # colors are represented by their first letter everywhere except here
 color_playing = 'white'
 color_waiting = 'black'
+starting_pos = preset_boards.default_board
+cb = ChessBoard(starting_pos)
+is_game_over = False
 while not is_game_over:
     while True:
         gui.open_window(cb)

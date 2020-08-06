@@ -1,3 +1,5 @@
+# gui.py
+# Handles all the gui
 from tkinter import *
 from util import col_to_board, row_to_board
 import util
@@ -26,7 +28,6 @@ piece_images = {
     'King_w': PhotoImage(file='Images/King_w.png'),
     'King_b': PhotoImage(file='Images/King_b.png'),
 }
-
 
 
 last_move = ''
@@ -98,7 +99,6 @@ def update_grid(chess_board):
         for y in range(8):
             piece = board[y][x].piece
             grid[x][y]['image'] = piece_images[piece.img_name]
-
 
 
 def open_window(chess_board):

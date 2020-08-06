@@ -1,15 +1,12 @@
+# chess_board.py
+# Defines the ChessBoard and its relevant classes and functions
 from chess_pieces import EmptyPiece
-from util import board_to_space
+from util import str_to_space
 import copy
 import preset_boards
 
 
-# Due to how this code is written indexing a space in the board is done [number][letter] like ['1']['a'] meaning a1
-def str_to_space(space_str):
-    space = [board_to_space[space_str[1]], board_to_space[space_str[0]]]
-    return space
-
-
+# Used in ChessBoard.board for every space
 class Space:
     def __init__(self, piece):
         self.piece = piece
@@ -17,6 +14,7 @@ class Space:
         self.black_attacks = False
         self.can_white_en_passant = False
         self.can_black_en_passant = False
+        # attackers lists is used only in debugging currently
         self.white_attackers = []
         self.black_attackers = []
 
@@ -51,6 +49,7 @@ class Space:
         return False
 
 
+# Takes a 2D list of pieces and returns a 2D list of new spaces using them
 def preset_to_board(preset):
     board = []
     row = []
@@ -62,7 +61,7 @@ def preset_to_board(preset):
     return board
 
 
-# This class holds the results of the move which is used by chess.py
+# This class holds the results of chessboard.move() which is used by chess.py
 class MoveResults:
     def __init__(self, success, fail_cause='',
                  white_checkmated=False, black_checkmated=False,
@@ -83,11 +82,13 @@ class MoveResults:
 
 class ChessBoard:
     def __init__(self, preset=preset_boards.default_board):
+        # Indexing a space in the board is done [y][x]
         self.board = preset_to_board(preset)
         self.set_piece_locations()
         self.set_attacks()
 
     # print_board prints out a text representation of the board NOT a gui representation
+    # Not currently used and may be deleted in the future
     def print_board(self):
         output = '\n=========================================\n| '
         for y in range(8):
@@ -99,11 +100,13 @@ class ChessBoard:
                 output += '\n========================================='
         print(output)
 
+    # Updates every piece.location for each piece in this ChessBoard
     def set_piece_locations(self):
         for y in range(8):
             for x in range(8):
                 self.board[y][x].piece.location = [y, x]
 
+    # tells every piece in this ChessBoard to set
     def set_attacks(self):
         for y in range(8):
             for x in range(8):
@@ -111,7 +114,7 @@ class ChessBoard:
         for y in range(8):
             for x in range(8):
                 piece = self.board[y][x].piece
-                self.board[y][x].piece.attack(self.board, [y, x])
+                self.board[y][x].piece.attack(self.board, location=[y, x])
 
     # Called right before move() returns True
     def on_move(self, color):
@@ -124,6 +127,7 @@ class ChessBoard:
         piece = self.board[start[0]][start[1]].piece
         self.board[end[0]][end[1]].piece = piece
         self.board[start[0]][start[1]].piece = EmptyPiece()
+        # Here we do special thing for certain pieces
         if piece.name == 'Pawn':
             piece.is_first_move = False
             if piece.took_en_passant:
@@ -165,11 +169,16 @@ class ChessBoard:
     # Returns if the given color is checkmated
     def is_checkmated(self, color):
         temp_cb = None
+        # Loops though every space in the board
         for y in range(8):
             for x in range(8):
-                temp_cb = copy.deepcopy(self)
-                piece = temp_cb.board[y][x].piece
+                piece = self.board[y][x].piece
+                # if the space has a piece with the potentially checkmated color,
+                # then create a copy of this board in temp_cb
                 if piece.color == color:
+                    temp_cb = copy.deepcopy(self)
+                    piece = temp_cb.board[y][x]
+                    # In the copy check every move for this piece and see if it's check
                     for check_y in range(8):
                         for check_x in range(8):
                             start = [y, x]
@@ -179,23 +188,24 @@ class ChessBoard:
                                     return False
         return True
 
-
     # start_str and end_str should be strings like a1, c4, etc.
     def check_legal(self, start, end):
         return self.board[start[0]][start[1]].piece.is_legal_move(self.board, start, end)
 
     # This does check if the move is legal and will not make illegal moves
-    # Returns True if the move was made
+    # Returns MoveResults with info regarding the move and state of the board
     # Note: color_playing is the only place in code where the colors aren't abbreviated
     # that's why you see color_playing[0] to get the abbreviation
     def move(self, start_str, end_str, color_playing):
         start = str_to_space(start_str)
         end = str_to_space(end_str)
         piece = self.board[start[0]][start[1]].piece
+        # Move Failed because its the wrong color
         if piece.color != color_playing[0]:
             return MoveResults(success=False, fail_cause=f'{color_playing} to move')
         if self.check_legal(start, end):
             if not self.does_move_into_check(start, end, color_playing[0]):
+                # Here are all the successful move attempts
                 self.force_move(start, end)
                 self.on_move(color_playing[0])
                 if self.is_checkmated('w'):
@@ -208,6 +218,8 @@ class ChessBoard:
                     return MoveResults(success=True, black_in_check=True)
                 return MoveResults(success=True)
             else:
+                # Move Failed because it leaves color_playing in check
                 return MoveResults(success=False, fail_cause=f'Move leaves {color_playing} in check')
         else:
+            # Move Failed due to how pieces move
             return MoveResults(success=False, fail_cause='Illegal move by piece definition')

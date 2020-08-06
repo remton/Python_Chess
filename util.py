@@ -1,3 +1,6 @@
+# util.py
+# Has some miscellaneous utilities used throughout this program
+
 # Due to how this code is written indexing a space in the board is done [number][letter] like ['1']['a'] meaning a1
 # Dictionaries used to convert between strings like 'a4' to indexes like [5][0]
 board_to_space = {
@@ -18,6 +21,10 @@ board_to_space = {
     '7': 6,
     '8': 7
 }
+def str_to_space(space_str):
+    space = [board_to_space[space_str[1]], board_to_space[space_str[0]]]
+    return space
+
 col_to_board = {
     0: '1',
     1: '2',
@@ -39,7 +46,8 @@ row_to_board = {
     7: 'h',
 }
 
-# Most of the time colors are represnted by their character abreviations This dict allows us to convert back easily their names
+# Most of the time colors are represented by their character abbreviations
+# This dict allows us to convert back easily their names
 color_abr_to_name = {
     'w': 'white',
     'b': 'black',
@@ -51,8 +59,9 @@ empty_abr = ' '
 empty_color = ' '
 
 # This was needed to create lambdas in a loop for each button in gui
+# using lambda: obj(param) in the loop led to one lambda being used for all buttons
 def create_lambda(obj, param):
-    return lambda : obj(param)
+    return lambda: obj(param)
 
 def get_lower(num1, num2):
     if num1 < num2:
