@@ -29,6 +29,9 @@ while not is_game_over:
             if move_results.white_checkmated or move_results.black_checkmated:
                 print('Checkmate!')
                 is_game_over = True
+            if move_results.is_draw:
+                print('Game is a draw')
+                is_game_over = True
             temp = color_playing
             color_playing = color_waiting
             color_waiting = temp

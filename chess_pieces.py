@@ -282,7 +282,7 @@ class Rook:
         y = location[0]
         x = location[1]
         # Down
-        for y in range(location[0] - 1, 0, -1):
+        for y in range(location[0] - 1, -1, -1):
             board_piece = board[y][x].piece
             if board_piece.color == empty_color:
                 board[y][x].set_attack(self.color, self.name)
@@ -297,7 +297,7 @@ class Rook:
         y = location[0]
         x = location[1]
         # Left
-        for x in range(location[1] - 1, 0, -1):
+        for x in range(location[1] - 1, -1, -1):
             board_piece = board[y][x].piece
             if board_piece.color == empty_color:
                 board[y][x].set_attack(self.color, self.name)
@@ -380,8 +380,8 @@ class King:
             return False
         # stops walking into check
         # (may be redundant due to checking this in chess_board.ChessBoard)
-        if board[end[0]][end[1]].is_enemy_attacking(self.color):
-            return False
+        # if board[end[0]][end[1]].is_enemy_attacking(self.color):
+        #     return False
 
         # Castling implementation
         self.need_castle = False

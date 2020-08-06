@@ -63,9 +63,10 @@ def preset_to_board(preset):
 
 # This class holds the results of chessboard.move() which is used by chess.py
 class MoveResults:
-    def __init__(self, success, fail_cause='',
+    def __init__(self, success, fail_cause='', is_draw=False,
                  white_checkmated=False, black_checkmated=False,
                  white_in_check=False, black_in_check=False):
+        self.is_draw = is_draw
         self.white_checkmated = white_checkmated
         self.black_checkmated = black_checkmated
         self.white_in_check = white_in_check
@@ -170,9 +171,49 @@ class ChessBoard:
                     return piece.is_in_check(self.board)
 
     # Brute-Force approach is ugly but it works*
+    # Try every move for the opposite of the given color. If none are legal return true
+    # Also checks if only kings remain on the board
+    def is_draw(self, color_playing):
+        if color_playing == 'w' or color_playing == 'white':
+            color = 'b'
+        else:
+            color = 'w'
+
+        just_kings = True
+        color = color
+        is_stalemate = True
+        temp_cb = None
+        # Loops though every space in the board
+        for y in range(8):
+            for x in range(8):
+                piece = self.board[y][x].piece
+                if piece.name != 'King' and piece.name != 'Empty':
+                    just_kings = False
+                # if the space has a piece with color then,
+                # create a copy of this board in temp_cb
+                if piece.color == color:
+                    if piece.name == 'King' and piece.is_in_check(self.board):
+                        return False
+                    temp_cb = copy.deepcopy(self)
+                    piece = temp_cb.board[y][x]
+                    # In the copy check every move for this piece and see if it's legal
+                    for check_y in range(8):
+                        for check_x in range(8):
+                            start = [y, x]
+                            end = [check_y, check_x]
+                            if temp_cb.check_legal(start, end):
+                                if not temp_cb.does_move_into_check(start, end, color):
+                                    is_stalemate = False
+        if is_stalemate:
+            return True
+        if just_kings:
+            return True
+        else:
+            return False
+
+    # Brute-Force approach is ugly but it works*
     # Returns if the given color is checkmated
     def is_checkmated(self, color):
-        temp_cb = None
         # Loops though every space in the board
         for y in range(8):
             for x in range(8):
@@ -180,6 +221,8 @@ class ChessBoard:
                 # if the space has a piece with the potentially checkmated color,
                 # then create a copy of this board in temp_cb
                 if piece.color == color:
+                    if piece.name == 'King' and not piece.is_in_check(self.board):
+                        return False
                     temp_cb = copy.deepcopy(self)
                     piece = temp_cb.board[y][x]
                     # In the copy check every move for this piece and see if it's check
@@ -194,7 +237,9 @@ class ChessBoard:
 
     # start_str and end_str should be strings like a1, c4, etc.
     def check_legal(self, start, end):
-        return self.board[start[0]][start[1]].piece.is_legal_move(self.board, start, end)
+        if self.board[start[0]][start[1]].piece.is_legal_move(self.board, start, end):
+            return True
+        return False
 
     # This does check if the move is legal and will not make illegal moves
     # Returns MoveResults with info regarding the move and state of the board
@@ -212,6 +257,8 @@ class ChessBoard:
                 # Here are all the successful move attempts
                 self.force_move(start, end)
                 self.on_move(color_playing[0])
+                if self.is_draw(color_playing[0]):
+                    return MoveResults(success=True, is_draw=True)
                 if self.is_checkmated('w'):
                     return MoveResults(success=True, white_checkmated=True)
                 if self.is_checkmated('b'):
