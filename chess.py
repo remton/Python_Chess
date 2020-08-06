@@ -1,3 +1,7 @@
+import chess_board
+import chess_pieces
+import gui
+import util
 from chess_board import ChessBoard
 import preset_boards
 import gui

@@ -62,7 +62,7 @@ def preset_to_board(preset):
     return board
 
 
-# This class holds the results of the move which is used by app.py
+# This class holds the results of the move which is used by chess.py
 class MoveResults:
     def __init__(self, success, fail_cause='',
                  white_checkmated=False, black_checkmated=False,
