@@ -11,9 +11,11 @@ import gui
 # colors are represented by their first letter everywhere except here
 color_playing = 'white'
 color_waiting = 'black'
-starting_pos = preset_boards.default_board
+starting_pos = preset_boards.checkmate_1
 cb = ChessBoard(starting_pos)
 is_game_over = False
+checkmate_end = False
+draw_end = False
 while not is_game_over:
     while True:
         gui.open_window(cb)
@@ -28,9 +30,11 @@ while not is_game_over:
                 print('Check!')
             if move_results.white_checkmated or move_results.black_checkmated:
                 print('Checkmate!')
+                checkmate_end = True
                 is_game_over = True
             if move_results.is_draw:
                 print('Game is a draw')
+                draw_end = True
                 is_game_over = True
             temp = color_playing
             color_playing = color_waiting
@@ -38,4 +42,4 @@ while not is_game_over:
             break
         else:
             print(f"Move Failed: {move_results.fail_cause}")
-gui.open_window(cb)
+gui.open_endgame_window(checkmate_end, draw_end)

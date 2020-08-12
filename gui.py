@@ -107,3 +107,19 @@ def open_window(chess_board):
     root.mainloop()
 
 
+def endgame_window_close(end_root):
+    end_root.quit()
+
+def open_endgame_window(is_checkmate=False, is_draw=False):
+    end_root = Tk()
+    if is_checkmate:
+        message = "Checkmate!"
+    elif is_draw:
+        message = "Draw."
+    else:
+        message = "Error: open_endgame_window needs checkmate or is_draw to be true"
+    message_label = Label(end_root, height=5, width=10, text=message)
+    message_label.pack()
+    continue_button = Button(end_root, padx=20, pady=20, text='continue', command=lambda: endgame_window_close(end_root))
+    continue_button.pack()
+    end_root.mainloop()

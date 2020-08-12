@@ -26,8 +26,6 @@ class EmptyPiece:
         self.attacked_spaces.clear()
 
 
-
-
 class Pawn:
     def __init__(self, color):
         self.location = []
