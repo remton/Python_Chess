@@ -101,10 +101,11 @@ def update_grid(chess_board):
             grid[x][y]['image'] = piece_images[piece.img_name]
 
 
-def open_window(chess_board):
+def open_window(chess_board, run_loop=True):
     create_grid()
     update_grid(chess_board)
-    root.mainloop()
+    if run_loop:
+        root.mainloop()
 
 
 def endgame_window_close(end_root):
