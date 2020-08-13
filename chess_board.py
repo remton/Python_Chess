@@ -107,7 +107,7 @@ class ChessBoard:
             for x in range(8):
                 self.board[y][x].piece.location = [y, x]
 
-    # tells every piece in this ChessBoard to set
+    # tells every piece in this ChessBoard to set its attacks
     def set_attacks(self):
         for y in range(8):
             for x in range(8):
@@ -162,7 +162,7 @@ class ChessBoard:
                         return True
         return False
 
-    # Returns if the given color is in check
+    # Returns if the given color is currently in check
     def is_in_check(self, color):
         for y in range(8):
             for x in range(8):
